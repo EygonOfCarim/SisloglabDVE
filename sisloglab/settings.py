@@ -20,7 +20,7 @@ DEBUG = False
 LOGIN_URL = '/'
 LOGOUT_URL = '/'
 
-ALLOWED_HOSTS = ['192.168.6.56']
+ALLOWED_HOSTS = ['192.168.6.56', '192.168.6.220']
 
 # Application definition
 
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
-ROOT_URLCONF = 'sysloglab.urls'
+ROOT_URLCONF = 'sisloglab.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sysloglab.wsgi.application'
+WSGI_APPLICATION = 'sisloglab.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
