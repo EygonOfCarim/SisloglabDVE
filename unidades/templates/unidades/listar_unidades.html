@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container text-center mt-3 col-12">
+    <h1>Listagem de Unidades</h1>
+    <hr>
+</div>
+<div class="container col-8">
+    <form>
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-4">
+                <label for="id_cnes" class="form-label">CNES</label>
+                <input class="form-control mb-3" id="id_cnes" type="text"
+                       name="cnes" placeholder="Busca por cnes..."
+                       onkeypress="return numbersOnly(event)"
+                       autocomplete="off"
+                       hx-get="{% url 'unidades_search' %}"
+                       hx-trigger="keyup changed delay:300ms, search"
+                       hx-include="[name='cnes'],[name='nome_fantasia']"
+                       hx-target="#search">
+            </div>
+            <div class="col-4">
+                <label for="id_nome_fantasia" class="form-label">Nome Fantasia</label>
+                <input class="form-control" id="id_nome_fantasia"
+                       name="nome_fantasia" placeholder="Busca por nome fantasia..."
+                       onkeypress="return lettersOnly(event)"
+                       autocomplete="off"
+                       hx-get="{% url 'unidades_search' %}"
+                       hx-trigger="keyup changed delay:300ms, search"
+                       hx-include="[name='cnes'],[name='nome_fantasia']"
+                       hx-target="#search">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="text-center">
+    {% if request.user.is_superuser %}
+        <a type="button" class="btn btn-outline-success px-4 me-4" href="{% url 'buscar_unidade' %}"><i class="bi bi-building-fill-add"></i> Cadastrar Unidade</a>
+    {% endif %}
+    <a type="button" class="btn btn-outline-danger px-4 me-3" href="{% url 'unidades' %}"><i class="bi bi-x-circle-fill"></i> Limpar Campos</a>
+</div>
+<div id="search">
+   {% include 'unidades/partials/tabela_unidades.html' %}
+</div>
+
+{% endblock %}

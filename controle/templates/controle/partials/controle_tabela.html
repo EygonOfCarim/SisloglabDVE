@@ -1,0 +1,103 @@
+{% load controle_tags %}
+<div class="container mt-4" style="width: 70%;">
+    <div class="table-responsive mx-4">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr class="table-dark">
+                <th class="text-center" scope="col">Unidade</th>
+                <th class="text-center" scope="col">Ano</th>
+                <th class="text-center" scope="col">Mês</th>
+                <th class="text-center" scope="col">Responsável</th>
+                <th class="text-center" scope="col">Contato</th>
+                <th class="text-center">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for controle in controles %}
+            <tr>
+                <td class="text-center">{{ controle.unidade }}</td>
+                <td class="text-center">{{ controle.ano }}</td>
+                <td class="text-center">{{ controle.mes | month_string }}</td>
+                <td class="text-center">{{ controle.responsavel }}</td>
+                <td class="text-center">{{ controle.telefone }}</td>
+                <td class="text-center d-flex justify-content-center align-items-center">
+                    <a role="button" href="{% url 'editar_controle' controle.pk %}" style="color:inherit"><i class="bi bi-pencil-fill p-2"></i></a>
+                    <a role="button" href="{% url 'deletar_controle' controle.pk %}" class="delete-link" style="color:inherit"><i class="bi bi-trash-fill"> </i></a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center align-items-center px-2 mt-4">
+            {% if controles.has_other_pages %}
+            <strong>Página {{ controles.number }} de {{controles.paginator.num_pages }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>
+            <ul class="pagination my-auto">
+                {% if controles.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ controles.previous_page_number }}">Anterior</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                {% for i in page_range|default_if_none:controles.paginator.get_elided_page_range %}
+                {% if controles.number == i %}
+                <li class="active page-item"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                {% if i == controles.paginator.ELLIPSIS %}
+                <li class="page-item"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% if controles.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ controles.next_page_number }}">Próxima</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total de Registros: {{controles.paginator.count }} </strong>
+        </div>
+    </div>
+</div>
+
+<!-- Modal personalizado -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmação de Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza de que deseja excluir este item?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a role="button" id="confirmDelete" class="btn btn-danger">Confirmar Exclusão</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para abrir o modal e redirecionar após confirmação -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var deleteLinks = document.querySelectorAll('.delete-link');
+        var confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+
+        deleteLinks.forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                // Adiciona um evento de clique ao botão de confirmação no modal
+                document.getElementById('confirmDelete').addEventListener('click', function () {
+                    window.location.href = link.href;
+                });
+                // Abre o modal
+                confirmationModal.show();
+            });
+        });
+    });
+</script>

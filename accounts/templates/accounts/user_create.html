@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container-fluid border mt-5 py-4" style="width: 85%;">
+    <h1 class="text-center">Cadastro de Usuário</h1>
+    <hr>
+    <form action="{% url 'user_create' %}" method="POST">
+        {% csrf_token %}
+        <div class="row mb-4 mx-2">
+            <div class="col-2">
+                <label for="id_first_name" class="form-label">Nome</label>
+                {{form.first_name}}
+            </div>
+            <div class="col-2">
+                <label for="id_username" class="form-label">Usuário</label>
+                {{form.username}}
+            </div>
+            <div class="col">
+                <label for="id_email" class="form-label">E-mail</label>
+                {{form.email}}
+            </div>
+            <div class="col">
+                <label class="form-label">Unidade</label>
+                <select class="form-select" aria-label="Selecione a unidade" name="unidade">
+                    <option selected>Selecione a unidade</option>
+                    {% for unidade in unidades %}
+                    <option value="{{unidade.cnes}}"> {{unidade}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-1 text-center">
+                <label for="id_is_staff" class="form-label">Gerente</label><br>
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_staff" id="id_is_staff" {% if not request.user.is_superuser %} disabled {% endif %}>
+            </div>
+            <div class="col-1 text-center">
+                <label for="id_is_superuser" class="form-label">Administrador</label><br>
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_superuser" id="id_is_superuser" {% if not request.user.is_superuser %} disabled {% endif %}>
+            </div>
+        </div>
+        <div class="d-flex flex-row justify-content-center mt-3">
+            <button type="submit" class="btn btn-outline-success px-4 me-3"><i class="bi bi-floppy-fill"></i> Salvar</button>
+            <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'users' %}"><i class="bi bi-x-circle-fill"></i> Cancelar</a>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

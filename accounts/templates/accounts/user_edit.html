@@ -1,0 +1,92 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container-fluid border mt-5 py-4" style="width: 85%;">
+    <h1 class="text-center">Atualização de Usuário</h1>
+    <hr>
+    <form action="#" method="POST">
+        {% csrf_token %}
+        <div class="row mb-4 mx-2">
+            <div class="col">
+                <label for="id_first_name" class="form-label">Nome</label>
+                {% if request.user.is_staff and not request.user.is_superuser %}
+                <input type="text" class="form-control" value="{{form.first_name.value}}" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" name="first_name" id="id_first_name" disabled>
+                {% else %}
+                <input type="text" class="form-control" value="{{form.first_name.value}}" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" name="first_name" id="id_first_name">
+                {% endif %}
+            </div>
+            <div class="col-2">
+                <label for="id_username" class="form-label">Usuário</label>
+                {% if request.user.is_staff and not request.user.is_superuser %}
+                <input type="text" class="form-control" value="{{form.username.value}}" onkeypress="return lettersOnly(event)" name="username" id="id_username" disabled>
+                {% else %}
+                <input type="text" class="form-control" value="{{form.username.value}}" onkeypress="return lettersOnly(event)" name="username" id="id_username">
+                {% endif %}
+            </div>
+            <div class="col">
+                <label for="id_email" class="form-label">E-mail</label>
+                {% if request.user == user or request.user.is_superuser %}
+                <input type="email" class="form-control" value="{{form.email.value}}" name="email" id="id_email">
+                {% elif not user.is_superuser and request.user.is_staff %}
+                <input type="email" class="form-control" value="{{form.email.value}}" name="email" id="id_email">
+                {% else %}
+                <input type="email" class="form-control" value="{{form.email.value}}" name="email" id="id_email" disabled>
+                {% endif %}
+            </div>
+            <div class="col">
+                <label class="form-label">Unidade</label>
+                <select class="form-select" aria-label="Selecione a unidade" name="unidade">
+                    <option disabled>Selecione a unidade</option>
+                    {% for unidade in unidades %}
+                    <option value="{{unidade.cnes}}" {% if unidade.cnes == user.userprofile.unidade.cnes %} selected {% endif %} > {{unidade}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-1 text-center">
+                <label for="id_is_active" class="form-label">Ativo</label><br>
+                {% if form.is_active.value %}
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_active" id="id_is_active" checked {% if user.is_superuser %}disabled{% elif not request.user.is_staff %}disabled{%else%}{%endif%}>
+                {% else %}
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_active" id="id_is_active" {% if user.is_superuser %}disabled{% elif not request.user.is_staff %}disabled{%else%}{%endif%}>
+                {% endif %}
+            </div>
+            <div class="col-1 text-center">
+                <label for="id_is_staff" class="form-label">Gerente</label><br>
+                {% if form.is_staff.value %}
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_staff" id="id_is_staff" checked {% if user.is_superuser %}disabled{% elif not request.user.is_superuser %}disabled{%else%}{%endif%}>
+                {% else %}
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_staff" id="id_is_staff" {% if user.is_superuser %}disabled{% elif not request.user.is_superuser %}disabled{%else%}{%endif%}>
+                {% endif %}
+            </div>
+            <div class="col-1 text-center">
+                <label for="id_is_superuser" class="form-label">Administrador</label><br>
+                {% if form.is_superuser.value %}
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_superuser" id="id_is_superuser" checked {% if user.is_superuser %}disabled{% elif not request.user.is_superuser %}disabled{%else%}{%endif%}>
+                {% else %}
+                <input type="checkbox" style="width: 1.5em; height: 1.5em;" class="mt-2" name="is_superuser" id="id_is_superuser" {% if user.is_superuser %}disabled{% elif not request.user.is_superuser %}disabled{%else%}{%endif%}>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col mx-2">
+                <p>Usuário criado em:<strong> {{profile.created_at}}</strong> por: {{profile.created_by.first_name}}</p>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col mx-2">
+                <p>Usuário atualizado em:<strong> {{profile.updated_at}}</strong> por: {{profile.updated_by.first_name}} </p>
+            </div>
+        </div>
+
+        <div class="d-flex flex-row justify-content-center mt-3">
+            {% if not user.is_superuser %}
+                <button type="submit" class="btn btn-outline-primary px-4 me-3"><i class="bi bi-floppy-fill"></i> Salvar</button>
+            {% endif %}
+            <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'users' %}"><i class="bi bi-x-circle-fill"></i> Cancelar</a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock content %}

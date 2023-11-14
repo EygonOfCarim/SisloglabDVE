@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<main>
+    <div class="{% if messages %}vh-error{% else %}vh-65{% endif %} bg-light d-flex justify-content-center align-items-center">
+        <div class="container d-flex text-light justify-content-center align-items-center">
+            <div class="col-7 bg-secondary border px-3 py-3">
+                <h5>Acesso ao Sistema</h5>
+                <hr>
+                <form method="POST" action="{% url 'login_process' %}">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="username-group"><i class="bi bi-person-fill"></i></span>
+                        <input type="text" name="username" value="{{username}}" class="form-control" placeholder="Usuário"
+                               aria-label="Username"
+                               aria-describedby="username-group" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="password-group"><i class="bi bi-lock-fill"></i></span>
+                        <input type="password" name="password" value="{{password}}" class="form-control" placeholder="Senha"
+                               aria-label="Senha"
+                               aria-describedby="password-group" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <a type="button" class="btn btn-danger" href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

@@ -1,0 +1,259 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container-fluid p-5">
+    <div class="container-fluid border me-2">
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <h1 class="text-center">Controle de Teste Rápido</h1>
+        <hr>
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <div class="row mb-4 d-flex justify-content-center">
+                <div class="col-2">
+                    <label class="form-label">Unidade</label>
+                    <input type="text" class="form-control" value="{{request.user.userprofile.unidade.apelido}}" name="unidade" id="id_unidade" disabled>
+                </div>
+                <div class="col-2">
+                    <label class="form-label">Responsável</label>
+                    <input type="text" class="form-control" value="{{request.user.first_name}}" name="responsavel" id="id_responsavel" readonly>
+                </div>
+                <div class="col-2">
+                    <label class="form-label">Contato</label>
+                    {{ form.telefone }}
+                </div>
+                <div class="col-2">
+                    <label class="form-label">Mês</label>
+                    <select class="form-select" aria-label="Selecione o mês" name="mes" id="id_mes" required>
+                        <option disabled selected>Selecione o mês</option>
+                        {% for key, value in escolhas_meses %}
+                            <option value="{{key}}" {% if key in meses %} disabled>{{value}} - JÁ CADASTRADO {%else%}> {{value}} {%endif%}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-2">
+                    <label class="form-label">Ano</label>
+                    <input type="text" class="form-control" value="{% now 'Y' %}" name="ano" id="id_ano" readonly>
+                </div>
+            </div>
+
+            <hr>
+            <h3 class="text-center mb-4"><u>Testes Realizados</u></h3>
+            <table id="table_t1hiv" class="table table-secondary text-center">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Rede cegonha</th>
+                    <th scope="col">Rotina</th>
+                    <th scope="col">Mobilização</th>
+                    <th scope="col">UPA</th>
+                    <th scope="col">PEP</th>
+                    <th scope="col">Laboratório</th>
+                    <th scope="col" class="text-light bg-dark">Total Realizado</th>
+                    <th scope="col">Inválido</th>
+                    <th scope="col">Perdido</th>
+                    <th scope="col">Total Reagentes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row" class="align-middle">T1 HIV</th>
+                    <td class="align-middle">{{ form.t1hiv_cegonha }}</td>
+                    <td class="align-middle">{{ form.t1hiv_rotina }}</td>
+                    <td class="align-middle">{{ form.t1hiv_mobilizacao }}</td>
+                    <td class="align-middle">{{ form.t1hiv_upa }}</td>
+                    <td class="align-middle">{{ form.t1hiv_pep }}</td>
+                    <td class="align-middle">{{ form.t1hiv_laboratorio }}</td>
+                    <td class="align-middle bg-dark">{{ form.t1hiv_total_realizado }}</td>
+                    <td class="align-middle">{{ form.t1hiv_invalido }}</td>
+                    <td class="align-middle">{{ form.t1hiv_perdido }}</td>
+                    <td class="align-middle">{{ form.t1hiv_total_reagentes }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="align-middle">T2 HIV</th>
+                    <td class="align-middle">{{ form.t2hiv_cegonha }}</td>
+                    <td class="align-middle">{{ form.t2hiv_rotina }}</td>
+                    <td class="align-middle">{{ form.t2hiv_mobilizacao }}</td>
+                    <td class="align-middle">{{ form.t2hiv_upa }}</td>
+                    <td class="align-middle">{{ form.t2hiv_pep }}</td>
+                    <td class="align-middle">{{ form.t2hiv_laboratorio }}</td>
+                    <td class="align-middle bg-dark">{{ form.t2hiv_total_realizado }}</td>
+                    <td class="align-middle">{{ form.t2hiv_invalido }}</td>
+                    <td class="align-middle">{{ form.t2hiv_perdido }}</td>
+                    <td class="align-middle">{{ form.t2hiv_total_reagentes }}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle" scope="row">Sífilis</th>
+                    <td class="align-middle">{{ form.sifilis_cegonha }}</td>
+                    <td class="align-middle">{{ form.sifilis_rotina }}</td>
+                    <td class="align-middle">{{ form.sifilis_mobilizacao }}</td>
+                    <td class="align-middle">{{ form.sifilis_upa }}</td>
+                    <td class="align-middle">{{ form.sifilis_pep }}</td>
+                    <td class="align-middle">{{ form.sifilis_laboratorio }}</td>
+                    <td class="align-middle bg-dark">{{ form.sifilis_total_realizado }}</td>
+                    <td class="align-middle">{{ form.sifilis_invalido }}</td>
+                    <td class="align-middle">{{ form.sifilis_perdido }}</td>
+                    <td class="align-middle">{{ form.sifilis_total_reagentes }}</td>
+                </tr>
+                <tr>
+                    <th class="align-middle" scope="row">Hepatite B</th>
+                    <td class="align-middle">{{ form.hepatiteb_cegonha }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_rotina }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_mobilizacao }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_upa }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_pep }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_laboratorio }}</td>
+                    <td class="align-middle bg-dark">{{ form.hepatiteb_total_realizado }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_invalido }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_perdido }}</td>
+                    <td class="align-middle">{{ form.hepatiteb_total_reagentes }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Hepatite C</th>
+                    <td class="align-middle">{{ form.hepatitec_cegonha }}</td>
+                    <td class="align-middle">{{ form.hepatitec_rotina }}</td>
+                    <td class="align-middle">{{ form.hepatitec_mobilizacao }}</td>
+                    <td class="align-middle">{{ form.hepatitec_upa }}</td>
+                    <td class="align-middle">{{ form.hepatitec_pep }}</td>
+                    <td class="align-middle">{{ form.hepatitec_laboratorio }}</td>
+                    <td class="align-middle bg-dark">{{ form.hepatitec_total_realizado }}</td>
+                    <td class="align-middle">{{ form.hepatitec_invalido }}</td>
+                    <td class="align-middle">{{ form.hepatitec_perdido }}</td>
+                    <td class="align-middle">{{ form.hepatitec_total_reagentes }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+            <div class="row mb-4">
+                <h3 class="mb-4 text-center"><u>Autotestes HIV Dispensados</u></h3>
+                <table class="table table-secondary text-center" style="width: 20%; margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th class="align-middle" scope="col">#</th>
+                        <th class="align-middle" scope="col">Testes dispensados</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th  class="align-middle" scope="row">Quantidade</th>
+                        <td class="align-middle">{{ form.auto_teste_hiv }}</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <div class="row mb-4">
+                <h3 class="mb-4 text-center"><u>Testes em Estoque</u></h3>
+                <table class="table table-secondary text-center" style="width: 50%; margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th class="align-middle" scope="col">#</th>
+                        <th class="align-middle" scope="col">T1 HIV</th>
+                        <th class="align-middle" scope="col">T2 HIV</th>
+                        <th class="align-middle" scope="col">Sífilis</th>
+                        <th class="align-middle" scope="col">Hepatite B</th>
+                        <th class="align-middle" scope="col">Hepatite C</th>
+                        <th class="align-middle" scope="col">Autoteste HIV</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th  class="align-middle" scope="row">Quantidade</th>
+                        <td class="align-middle">{{form.t1hiv_testes_estoque}}</td>
+                        <td class="align-middle">{{form.t2hiv_testes_estoque}}</td>
+                        <td class="align-middle">{{form.sifilis_testes_estoque}}</td>
+                        <td class="align-middle">{{form.hepatiteb_testes_estoque}}</td>
+                        <td class="align-middle">{{form.hepatitec_testes_estoque}}</td>
+                        <td class="align-middle">{{form.auto_teste_hiv_estoque}}</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <div class="row mb-4">
+                <h3 class="mb-4 text-center"><u>Caixas Solicitadas</u></h3>
+                <table class="table table-secondary text-center" style="width: 50%; margin: 0 auto;">
+                    <thead>
+                    <tr>
+                        <th class="align-middle" scope="col">#</th>
+                        <th class="align-middle" scope="col">T1 HIV</th>
+                        <th class="align-middle" scope="col">T2 HIV</th>
+                        <th class="align-middle" scope="col">Sífilis</th>
+                        <th class="align-middle" scope="col">Hepatite B</th>
+                        <th class="align-middle" scope="col">Hepatite C</th>
+                        <th class="align-middle" scope="col">Autoteste HIV</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th class="align-middle" scope="row">Quantidade</th>
+                        <td class="align-middle">{{form.t1hiv_caixas_solicitadas}}</td>
+                        <td class="align-middle">{{form.t2hiv_caixas_solicitadas}}</td>
+                        <td class="align-middle">{{form.sifilis_caixas_solicitadas}}</td>
+                        <td class="align-middle">{{form.hepatiteb_caixas_solicitadas}}</td>
+                        <td class="align-middle">{{form.hepatitec_caixas_solicitadas}}</td>
+                        <td class="align-middle">{{form.auto_teste_hiv_solicitadas}}</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <div class="row mb-4">
+                <div class="col d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-outline-success px-4 me-3"><i class="bi bi-floppy-fill"></i> Salvar</button>
+                    <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'controles' %}"><i class="bi bi-x-circle-fill"></i> Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $(".insert").each(function(){
+            $(this).val(0);
+       })
+        $(".totalt1hiv").val(0);
+        $(".totalt2hiv").val(0);
+        $(".totalsifilis").val(0);
+        $(".totalhepatiteb").val(0);
+        $(".totalhepatitec").val(0);
+    })
+    $(document).on("change", ".t1hiv", function() {
+        var sum = 0;
+        $(".t1hiv").each(function(){
+            sum += +$(this).val();
+        });
+        $(".totalt1hiv").val(sum);
+    });
+    $(document).on("change", ".t2hiv", function() {
+        var sum = 0;
+        $(".t2hiv").each(function(){
+            sum += +$(this).val();
+        });
+        $(".totalt2hiv").val(sum);
+    });
+    $(document).on("change", ".sifilis", function() {
+        var sum = 0;
+        $(".sifilis").each(function(){
+            sum += +$(this).val();
+        });
+        $(".totalsifilis").val(sum);
+    });
+    $(document).on("change", ".hepatiteb", function() {
+        var sum = 0;
+        $(".hepatiteb").each(function(){
+            sum += +$(this).val();
+        });
+        $(".totalhepatiteb").val(sum);
+    });
+    $(document).on("change", ".hepatitec", function() {
+        var sum = 0;
+        $(".hepatitec").each(function(){
+            sum += +$(this).val();
+        });
+        $(".totalhepatitec").val(sum);
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,193 @@
+{% extends 'main.html' %}
+{% load controle_tags %}
+{% block content %}
+<div class="container-fluid p-5">
+
+    <div class="container-fluid border me-2">
+        <h1 class="text-center">Controle de Teste Rápido</h1>
+        <hr>
+
+        <div class="row mb-4 d-flex justify-content-center">
+            <div class="col-2 text-center">
+                <label for="id_unidades" class="form-label fs-6"><b>Valores preenchidos pelas unidades:</b></label>
+                <select class="form-control mb-3" id="id_unidades" name="unidades" multiple>
+                {% for unidade in unidades%}
+                    <option>{{unidade}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="col-2 text-center">
+                <label class="form-label fs-5"><b>Mês</b></label>
+                <input type="text" class="text-center form-control" value="{{ mes | month_string }}" readonly>
+            </div>
+            <div class="col-2">
+                <label class="form-label fs-5"><b>Ano</b></label>
+                <input type="text" class="text-center form-control" value="{{ ano }}" readonly>
+            </div>
+        </div>
+
+        <hr>
+        <h3 class="text-center mb-4"><u>Testes Realizados</u></h3>
+        <table id="table_t1hiv" class="table table-secondary text-center">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Rede cegonha</th>
+                <th scope="col">Rotina</th>
+                <th scope="col">Mobilização</th>
+                <th scope="col">UPA</th>
+                <th scope="col">PEP</th>
+                <th scope="col">Laboratório</th>
+                <th scope="col" class="text-light bg-dark">Total Realizado</th>
+                <th scope="col">Inválido</th>
+                <th scope="col">Perdido</th>
+                <th scope="col">Total Reagentes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row" class="align-middle">T1 HIV</th>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_cegonha }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_rotina }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_mobilizacao }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_upa }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_pep }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_laboratorio }}" readonly></td>
+                <td class="align-middle bg-dark"><input type="text" class="text-center form-control" value="{{ form.t1hiv_total_realizado }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_invalido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_perdido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t1hiv_total_reagentes }}" readonly></td>
+            </tr>
+            <tr>
+                <th scope="row" class="align-middle">T2 HIV</th>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_cegonha }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_rotina }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_mobilizacao }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_upa }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_pep }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_laboratorio }}" readonly></td>
+                <td class="align-middle bg-dark"><input type="text" class="text-center form-control" value="{{ form.t2hiv_total_realizado }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_invalido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_perdido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.t2hiv_total_reagentes }}" readonly></td>
+            </tr>
+            <tr>
+                <th class="align-middle" scope="row">Sífilis</th>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_cegonha }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_rotina }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_mobilizacao }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_upa }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_pep }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_laboratorio }}" readonly></td>
+                <td class="align-middle bg-dark"><input type="text" class="text-center form-control" value="{{ form.sifilis_total_realizado }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_invalido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_perdido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.sifilis_total_reagentes }}" readonly></td>
+            </tr>
+            <tr>
+                <th class="align-middle" scope="row">Hepatite B</th>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_cegonha }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_rotina }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_mobilizacao }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_upa }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_pep }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_laboratorio }}" readonly></td>
+                <td class="align-middle bg-dark"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_total_realizado }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_invalido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_perdido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatiteb_total_reagentes }}" readonly></td>
+            </tr>
+            <tr>
+                <th scope="row">Hepatite C</th>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_cegonha }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_rotina }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_mobilizacao }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_upa }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_pep }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_laboratorio }}" readonly></td>
+                <td class="align-middle bg-dark"><input type="text" class="text-center form-control" value="{{ form.hepatitec_total_realizado }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_invalido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_perdido }}" readonly></td>
+                <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.hepatitec_total_reagentes }}" readonly></td>
+            </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div class="row mb-4">
+            <h3 class="mb-4 text-center"><u>Autotestes HIV Dispensados</u></h3>
+            <table class="table table-secondary text-center" style="width: 15%; margin: 0 auto;">
+                <thead>
+                <tr>
+                    <th class="align-middle" scope="col">#</th>
+                    <th class="align-middle" scope="col">Testes dispensados</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th  class="align-middle" scope="row">Quantidade</th>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{ form.auto_teste_hiv }}" readonly></td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <div class="row mb-4">
+            <h3 class="mb-4 text-center"><u>Testes em Estoque</u></h3>
+            <table class="table table-secondary text-center" style="width: 50%; margin: 0 auto;">
+                <thead>
+                <tr>
+                    <th class="align-middle" scope="col">#</th>
+                    <th class="align-middle" scope="col">T1 HIV</th>
+                    <th class="align-middle" scope="col">T2 HIV</th>
+                    <th class="align-middle" scope="col">Sífilis</th>
+                    <th class="align-middle" scope="col">Hepatite B</th>
+                    <th class="align-middle" scope="col">Hepatite C</th>
+                    <th class="align-middle" scope="col">Autoteste HIV</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th  class="align-middle" scope="row">Quantidade</th>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.t1hiv_testes_estoque}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.t2hiv_testes_estoque}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.sifilis_testes_estoque}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.hepatiteb_testes_estoque}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.hepatitec_testes_estoque}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.auto_teste_hiv_estoque}}" readonly></td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        <div class="row mb-4">
+            <h3 class="mb-4 text-center"><u>Caixas Solicitadas</u></h3>
+            <table class="table table-secondary text-center" style="width: 50%; margin: 0 auto;">
+                <thead>
+                <tr>
+                    <th class="align-middle" scope="col">#</th>
+                    <th class="align-middle" scope="col">T1 HIV</th>
+                    <th class="align-middle" scope="col">T2 HIV</th>
+                    <th class="align-middle" scope="col">Sífilis</th>
+                    <th class="align-middle" scope="col">Hepatite B</th>
+                    <th class="align-middle" scope="col">Hepatite C</th>
+                    <th class="align-middle" scope="col">Autoteste HIV</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th class="align-middle" scope="row">Quantidade</th>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.t1hiv_caixas_solicitadas}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.t2hiv_caixas_solicitadas}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.sifilis_caixas_solicitadas}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.hepatiteb_caixas_solicitadas}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.hepatitec_caixas_solicitadas}}" readonly></td>
+                    <td class="align-middle"><input type="text" class="text-center form-control" value="{{form.auto_teste_hiv_solicitadas}}" readonly></td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+    </div>
+    <div class="col d-flex justify-content-center mt-4">
+        <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'exportar_controle' %}"><i class="bi bi-x-circle-fill"></i> Voltar</a>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container-fluid mt-5 py-4" style="width: 85%;">
+    <h1 class="text-center">Bem vindo, {{request.user.first_name}}</h1>
+    <hr>
+</div>
+
+{% endblock %}

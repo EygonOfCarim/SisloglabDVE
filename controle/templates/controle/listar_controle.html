@@ -1,0 +1,92 @@
+{% extends 'main.html' %}
+{% load controle_tags %}
+{% block content %}
+
+<div class="container text-center mt-3 col-12">
+    <h1>Registros cadastrados</h1>
+    <hr>
+</div>
+<div class="container col-8">
+    <form>
+        {% csrf_token %}
+        <div class="row mb-3">
+            {% if request.user.is_superuser or request.user.is_staff %}
+            <div class="col-3">
+                <label for="id_unidade" class="form-label">Unidade</label>
+                <select class="form-control mb-3" id="id_unidade" name="unidade"
+                       hx-get="{% url 'controle_search' %}"
+                       hx-include="[name='mes'],[name='ano'],[name='unidade']"
+                       hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por unidade</option>
+                    <option value="todos">Todos</option>
+                    {% for unidade in unidades %}
+                        <option value="{{unidade.cnes}}">{{unidade}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div class="col-3">
+                <label for="id_mes" class="form-label">Mês</label>
+                <select class="form-control mb-3" id="id_mes" name="mes"
+                       hx-get="{% url 'controle_search' %}"
+                       hx-include="[name='mes'],[name='ano'],[name='unidade']"
+                       hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por mês</option>
+                    <option value="todos">Todos</option>
+                    {% for mes in meses %}
+                    <option value="{{mes}}">{{mes|month_string}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-3">
+                <label for="id_ano" class="form-label">Ano</label>
+                <select class="form-control mb-3" id="id_ano" name="ano"
+                       hx-get="{% url 'controle_search' %}"
+                       hx-include="[name='mes'],[name='ano'],[name='unidade']"
+                       hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por ano</option>
+                    <option value="todos">Todos</option>
+                    {% for ano in anos %}
+                    <option value="{{ano}}">{{ano}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="text-center">
+    <a type="button" class="btn btn-outline-success px-4 me-3" href="{% url 'criar_controle' %}"><i class="bi bi-plus-circle"></i> Cadastrar Valores</a>
+    <a type="button" class="btn btn-outline-danger px-4 me-3" href="{% url 'controles' %}"><i class="bi bi-x-circle-fill"></i> Limpar Campos</a>
+</div>
+<div id="search">
+   {% include 'controle/partials/controle_tabela.html' %}
+</div>
+
+<script>
+    $("#submit-id-delete").click(function(ev){
+    ev.preventDefault();
+
+    var deleteBtn = $(this);
+
+    ShopifyApp.Modal.confirm(
+        {
+            title: "Delete?",
+            message: "Are you sure you want to delete this?",
+            okButton: "Yes, delete",
+            style: "danger"
+        },
+            function(result){
+
+        if(!result){
+            return false;
+        }
+        else {
+            deleteBtn.parents('form').append('<input type="hidden" name="delete" id="delete" value="delete" />').submit();
+            return true;
+        }
+
+    });
+});
+</script>
+
+{% endblock content %}

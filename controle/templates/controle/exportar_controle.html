@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load controle_tags %}
+{% block content %}
+
+<div class="container text-center mt-3 col-12">
+    <h1>Relatório Mensal - SisLogLab</h1>
+    <hr>
+</div>
+<div class="container col-4">
+    <form>
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="id_ano" class="form-label">Ano</label>
+                <select class="form-control mb-3" id="id_ano" name="ano"
+                        hx-get="{% url 'controle_export' %}"
+                        hx-include="[name='mes'],[name='ano']"
+                        hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por ano</option>
+                    <option value="todos">Todos</option>
+                    {% for ano in anos %}
+                    <option value="{{ano}}">{{ano}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-6">
+                <label for="id_ano" class="form-label">Mês</label>
+                <select class="form-control mb-3" id="id_mes" name="mes"
+                        hx-get="{% url 'controle_export' %}"
+                        hx-include="[name='mes'],[name='ano']"
+                        hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por mês</option>
+                    <option value="todos">Todos</option>
+                    {% for mes in meses %}
+                    <option value="{{mes}}">{{mes|month_string}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="text-center">
+    <a type="button" class="btn btn-outline-danger px-4 me-3" href="{% url 'exportar_controle' %}"><i class="bi bi-x-circle-fill"></i> Limpar Campos</a>
+</div>
+<div id="search">
+    {% include 'controle/partials/controle_export.html' %}
+</div>
+
+{% endblock content %}

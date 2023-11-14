@@ -1,0 +1,90 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container border mt-5 py-4">
+    <h1 class="text-center">Cadastro de Unidade</h1>
+    <hr>
+    <form action="{% url 'criar_unidade' %}" method="POST">
+        {% csrf_token %}
+                <div class="row mb-4 mx-2">
+            <div class="col-3">
+                <label for="id_cnes" class="form-label">CNES</label>
+                <input type="text" class="form-control" id="id_cnes" name="cnes" value="{{request.POST.cnes}}" onkeypress="return numbersOnly(event)" {% if cnes %} readonly="readonly" {% endif %} required>
+            </div>
+            <div class="col-1 d-flex flex-row justify-content-bottom align-items-end">
+                <button type="submit" class="btn btn-outline-primary" disabled><i class="bi bi-search"></i></button>
+            </div>
+            <div class="col-5">
+                <label for="id_razao_social" class="form-label">Razão Social</label>
+                <input type="text" class="form-control" id="id_razao_social" name="razao_social" value="{{razao_social}}" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" required>
+            </div>
+            <div class="col-3">
+                <label for="id_telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="id_telefone" name="telefone" onkeypress="return numbersOnly(event)" value="{{telefone}}">
+            </div>
+        </div>
+        <div class="row mb-4 mx-2">
+            <div class="col-4">
+                <label for="id_nome_fantasia" class="form-label">Nome Fantasia</label>
+                <input type="text" class="form-control" id="id_nome_fantasia" name="nome_fantasia" value="{{nome_fantasia}}" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" required>
+            </div>
+            <div class="col-2">
+                <label for="id_cep" class="form-label">CEP</label>
+                <input type="text" class="form-control" id="id_cep" name="cep" value="{{cep}}" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))">
+            </div>
+            <div class="col-3">
+                <label for="id_endereco" class="form-label">Endereço</label>
+                <input type="text" class="form-control" id="id_endereco" name="endereco" value="{{endereco}}" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" required>
+            </div>
+            <div class="col-1">
+                <label for="id_numero" class="form-label">Número</label>
+                <input type="text" class="form-control" id="id_numero" name="numero" value="{{numero}}" onkeypress="return numbersOnly(event)" required>
+            </div>
+            <div class="col-2">
+                <label for="id_bairro" class="form-label">Bairro</label>
+                <input type="text" class="form-control" id="id_bairro" name="bairro" value="{{bairro}}" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" required>
+            </div>
+        </div>
+        <div class="row mb-4 mx-2">
+            <div class="col-1">
+                <label for="id_uf" class="form-label">UF</label>
+                <select class="form-select"  aria-label="Selecione a UF" name="uf" id="id_uf" required>
+                    <option disabled selected></option>
+                    {% for key, value in ufs.items %}
+                        <option value="{{key}}" {% if key == uf%} selected {% endif %}> {{key}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-3">
+                <label for="id_municipio" class="form-label">Município</label>
+                <input type="text" class="form-control" id="id_municipio" name="municipio" onkeyup="return capitalize(event,this.id)" onkeypress="return lettersOnly(event)" value="{{municipio}}" required readonly>
+            </div>
+        </div>
+        <div class="d-flex flex-row justify-content-center mt-3">
+            <button type="submit" class="btn btn-outline-success px-4 me-3"><i class="bi bi-floppy-fill"></i> Salvar</button>
+            <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'unidades' %}"><i class="bi bi-x-circle-fill"></i> Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function lettersOnly(event)
+    {
+        var charCode = event.keyCode;
+        if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+function capitalize(event, id)
+    {
+        var inputField = document.getElementById(id);
+        inputField.value = inputField.value.toUpperCase();
+    }
+</script>
+
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg bg-white border-top">
+    <div class="container-fluid">
+        <a class="navbar-brand">
+            <img src="{% static 'img/brasao.png' %}" alt="Brasão" width="50" height="60">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto ms-5 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active fs-5" aria-current="page">Secretaria Municipal da Saúde</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active fs-5" aria-current="page">SysLogLab - IST</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark" style="--bs-navbar-padding-y: 0.1rem;">
+    <div class="container-fluid" style="padding-left: 0!important;">
+        <a class="navbar-brand" style="padding-top: 0!important; padding-bottom: 0!important" href="#"><img style="margin: 0!important" src="{% static 'img/Sisloglab.png' %}" alt="Brasão" width="200" height="50" ></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="bi bi-clipboard-plus-fill"></i> Controle Teste Rápido</a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="{% url 'criar_controle' %}"><i class="bi bi-plus-circle"></i> Cadastrar Valores</a></li>
+                        <li><a class="dropdown-item" href="{% url 'controles' %}"><i class="bi bi-gear-fill"></i> Consultar / Editar</a></li>
+                        <li><a class="dropdown-item" href="{% url 'exportar_controle' %}"><i class="bi bi-file-medical-fill"></i> Relatório Mensal</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="bi bi-buildings-fill"></i> Unidades</a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        {% if request.user.is_staff %}
+                            <li><a class="dropdown-item" href="{% url 'buscar_unidade' %}"><i class="bi bi-building-fill-add"></i> Cadastrar</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'unidades' %}"><i class="bi bi-building-fill-gear"></i> Consultar / Editar</a></li>
+                    </ul>
+                </li>
+                {% if request.user.is_staff %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i class="bi bi-people-fill"></i> Usuários</a>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="{% url 'user_create' %}"><i class="bi bi-person-plus-fill"></i> Cadastrar</a></li>
+                        <li><a class="dropdown-item" href="{% url 'users' %}"><i class="bi bi-person-lines-fill"></i> Consultar / Editar</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+                {% if request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logs' %}"><i class="bi bi-clipboard-data-fill"></i> Logs</a>
+                </li>
+                {% endif %}
+            </ul>
+            <span class="navbar-text ms-auto me-2 rounded bg-primary text-light px-3" style="cursor: default;">
+                <i class="bi bi-person-badge-fill px-1"></i>{{user|title}}
+            </span>
+            <a type="button" href="{% url 'logout' %}" class="my-auto btn btn-danger"><i class="px-1 bi bi-box-arrow-right"></i> Sair</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

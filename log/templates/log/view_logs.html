@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load log_tags %}
+{% block content %}
+<div class="container text-center mt-3 col-12">
+    <h1>Visualização de Logs</h1>
+    <hr>
+</div>
+<div class="container col-8">
+    <form>
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-4">
+                <label for="id_acao" class="form-label">Ação</label>
+                <select class="form-control mb-3" id="id_acao" name="acao"
+                        hx-get="{% url 'log_search' %}"
+                        hx-include="[name='acao'],[name='usuario']"
+                        hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por Ação</option>
+                    <option value="todas">Todas</option>
+                    {% for acao in acoes %}
+                        <option value="{{acao}}">{{acao}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-4">
+                <label for="id_usuario" class="form-label">Usuário</label>
+                <select class="form-control mb-3" id="id_usuario" name="usuario"
+                       onkeypress="return lettersOnly(event)"
+                       hx-get="{% url 'log_search' %}"
+                       hx-include="[name='acao'],[name='usuario']"
+                       hx-target="#search">
+                    <option value="" hidden selected disabled>Busca por Usuário</option>
+                    <option value="todos">Todos</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{usuario}}">{% if usuario is None %} VAZIO {% else %}{{usuario|user_name}}{% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="text-center">
+    <a type="button" class="btn btn-outline-danger px-4 me-3" href="{% url 'logs' %}"><i class="bi bi-x-circle-fill"></i> Limpar Campos</a>
+</div>
+<div id="search">
+   {% include 'log/partials/log_table.html' %}
+</div>
+
+{% endblock %}

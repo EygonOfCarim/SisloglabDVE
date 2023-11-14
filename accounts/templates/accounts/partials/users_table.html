@@ -1,0 +1,66 @@
+<div class="container mt-4" style="width: 70%;">
+    <div class="table-responsive mx-4 ">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr class="table-dark">
+                <th class="text-center" scope="col">Usuário</th>
+                <th class="text-center" scope="col">Nome</th>
+                <th class="text-center" scope="col">E-mail</th>
+                <th class="text-center" scope="col">Último Login</th>
+                <th class="text-center" scope="col">Ativo</th>
+                <th class="text-center" scope="col">Gerente</th>
+                <th class="text-center" scope="col">Admin</th>
+                <th class="text-center">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                <td class="text-center">{{ user.username }}</td>
+                <td class="text-center">{{ user.first_name }}</td>
+                <td class="text-center">{{ user.email }}</td>
+                <td class="text-center">{{ user.last_login|date:"d/m/Y"}}</td>
+                <td class="text-center">{% if user.is_active %}<i class="bi bi-check-circle-fill" style="color: green;"></i>{% else %}<i class="bi bi-x-circle-fill" style="color: red;"></i>{% endif %}</td>
+                <td class="text-center">{% if user.is_staff %}<i class="bi bi-check-circle-fill" style="color: green;"></i>{% else %}<i class="bi bi-x-circle-fill" style="color: red;"></i>{% endif %}</td>
+                <td class="text-center">{% if user.is_superuser %}<i class="bi bi-check-circle-fill" style="color: green;"></i>{% else %}<i class="bi bi-x-circle-fill" style="color: red;"></i>{% endif %}</td>
+                <td class="text-center d-flex justify-content-center align-items-center">
+                    <a role="button" href="{% url 'user_edit' user.pk %}" style="color:inherit"><i class="bi bi-pencil-fill p-2"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-center align-items-center px-2 mt-4">
+            {% if users.has_other_pages %}
+            <strong>Página {{ users.number }} de {{users.paginator.num_pages }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>
+            <ul class="pagination my-auto">
+                {% if users.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}">Anterior</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                {% for i in page_range|default_if_none:users.paginator.get_elided_page_range %}
+                {% if users.number == i %}
+                <li class="active page-item"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                {% if i == users.paginator.ELLIPSIS %}
+                <li class="page-item"><span class="page-link">{{ i }}</span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% if users.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}">Próxima</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total de Registros: {{users.paginator.count }} </strong>
+        </div>
+    </div>
+</div>

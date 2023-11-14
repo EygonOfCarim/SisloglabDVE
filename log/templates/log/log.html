@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+{% load controle_tags %}
+{% block content %}
+<div class="container-fluid p-5">
+    <div class="container-fluid border me-2">
+        <h1 class="text-center">Log</h1>
+        <hr>
+        <div class="row mb-4 d-flex justify-content-center">
+            <div class="col-2 text-center">
+                <label class="form-label"><b>Atividade</b></label>
+                <input class="form-control mb-3 text-center" id="id_acao" name="unidades" value="{{log.acao}}" readonly >
+            </div>
+            <div class="col-2 text-center">
+                <label class="form-label"><b>Campo</b></label>
+                <input type="text" class="text-center form-control" value="{{ log.objeto_afetado }}" readonly>
+            </div>
+            <div class="col-3 text-center">
+                <label class="form-label"><b>Mensagem</b></label>
+                <input type="text" class="text-center form-control" value="{{ log.mensagem }}" readonly>
+            </div>
+            <div class="col-3 text-center">
+                <label class="form-label"><b >Data / Hora</b></label>
+                <input type="text" class="text-center form-control" value="{{ log.data_hora }}" readonly>
+            </div>
+            <div class="col-2 text-center">
+                <label class="form-label"><b>Usuário:</b></label>
+                <input type="text" class="text-center form-control" value="{{ log.usuario.first_name }}" readonly>
+            </div>
+        </div>
+        <div class="row mb-4 d-flex justify-content-center">
+            <div class="col text-center fs-4">
+                <label class="form-label"><b >Dados Antes</b></label>
+                <textarea class="form-control mb-3" rows="3" style="text-align: center; resize: none;" id="id_d_antes" name="d_antes" readonly>{% if log.dados_antes is not None %}{{log.dados_antes}}{% else %}Sem dados{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="row mb-4 d-flex justify-content-center">
+            <div class="col text-center fs-4">
+                <label class="form-label"><b >Dados Depois</b></label>
+                <textarea class="form-control mb-3" rows="3" style="text-align: center; resize: none;" id="id_d_depois" name="d_depois" readonly>{% if log.dados_depois is not None %}{{log.dados_depois}}{% else %}Sem dados{% endif %}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="col d-flex justify-content-center mt-4">
+        <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'logs' %}"><i class="bi bi-x-circle-fill"></i> Voltar</a>
+    </div>
+</div>
+
+{% endblock content %}

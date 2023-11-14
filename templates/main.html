@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SisLogLab - IST</title>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'icons/bootstrap-icons.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/htmx.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'js/jquery.mask.min.js' %}"></script>
+  </head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                {% if message.level == 40 %}
+                    <div class="alert alert-danger text-center mt-5 p-3" role="alert">
+                {% else %}
+                    <div class="alert alert-success text-center mt-5 p-3" role="alert">
+                {% endif %}
+                    {{ message }}
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <br><strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </div>
+
+    {% block content %}
+
+    {% endblock %}
+
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
+<script>
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+<script>
+function lettersOnly(event)
+{
+    var charCode = event.keyCode;
+    if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 32)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+function numbersOnly(evemt)
+{
+    if (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+function capitalize(event, id)
+{
+    var inputField = document.getElementById(id);
+    inputField.value = inputField.value.toUpperCase();
+}
+
+$('input[type=email]').on('keypress', function (e) {
+    var re = /[A-Z0-9a-z@\._-]/.test(e.key);
+    if (!re) {
+        return false;
+    }
+});
+
+$("#id_email").on("input", function (e) {
+    var re = /^[A-Za-z0-9@._-]+$/;
+    var inputValue = e.target.value;
+
+    if (!re.test(inputValue)) {
+        // Remove os caracteres não permitidos
+        e.target.value = inputValue.replace(/[^A-Za-z0-9@._-]/g, '');
+    }
+});
+
+$('#id_telefone').mask('(00) 0000-00009');
+$('#id_telefone').blur(function(event) {
+   if($(this).val().length == 15){ // Celular com 9 dígitos + 2 dígitos DDD e 4 da máscara
+      $('#id_telefone').mask('(00) 00000-0009');
+   } else {
+      $('#id_telefone').mask('(00) 0000-00009');
+   }
+});
+
+$('#id_cep').mask('00000-009');
+$('#id_cep').blur(function(event) {
+   if($(this).val().length == 9){
+      $('#id_cep').mask('00000-009');
+   }
+});
+</script>
+<footer>
+    <div class="container-fluid">
+        <div class="border-top text-center d-flex justify-content-center align-items-center">
+            <a href="https://www.ribeiraopreto.sp.gov.br/portal/devisa-dve" target="_blank"><img src="{% static 'img/dve.png' %}" class="mt-2" alt="DVE" width="200" height="150"></a>
+            <a href="https://www.ribeiraopreto.sp.gov.br/portal/saude/programa-istaids-tuberculose" target="_blank"><img src="{% static 'img/ist.png' %}" class="mt-2" alt="IST" width="200" height="150"></a>
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>
