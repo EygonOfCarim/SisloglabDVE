@@ -3,8 +3,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import IntegrityError
+from django.db.models.functions import Cast
 from django.shortcuts import render, redirect
 from accounts.models import UserProfile
+from django.db.models import IntegerField
 from .models import Unidade
 import requests
 from requests import JSONDecodeError, ReadTimeout, ConnectTimeout
@@ -45,7 +47,8 @@ UF = {
 
 @login_required
 def unidades(request):
-    lista_unidades = Unidade.objects.all()
+    lista_unidades = Unidade.objects.all().order_by(
+            Cast('cnes', IntegerField()))
     page = request.GET.get('page', 1)
     paginator = Paginator(lista_unidades, 5)
     page_range = paginator.get_elided_page_range(number=page)
@@ -193,7 +196,8 @@ def unidades_search(request):
     cnes = request.GET.get('cnes')
     apelido = request.GET.get('nome_fantasia')
     page = request.GET.get('page', 1)
-    unidades = Unidade.objects.all()
+    unidades = Unidade.objects.all().order_by(
+            Cast('cnes', IntegerField()))
     if cnes:
         unidades = unidades.filter(cnes__icontains=cnes)
     if apelido:

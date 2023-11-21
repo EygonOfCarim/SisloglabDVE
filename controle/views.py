@@ -223,13 +223,16 @@ def editar_controle(request, pk):
             }
             return render(request, 'controle/editar_controle.html', context)
     else:
-        context = {
-            'form': ControleTesteForm(instance=registro),
-            'meses': meses,
-            'escolhas_meses': MES_CHOICES,
-            'controle': registro,
-        }
-        return render(request, 'controle/editar_controle.html', context)
+        if unidade == registro.unidade:
+            context = {
+                'form': ControleTesteForm(instance=registro),
+                'meses': meses,
+                'escolhas_meses': MES_CHOICES,
+                'controle': registro,
+            }
+            return render(request, 'controle/editar_controle.html', context)
+        else:
+            return redirect('controles')
 
 
 @login_required
@@ -284,31 +287,34 @@ def controles(request):
 
 @login_required
 def exportar_controles(request):
-    registros = ControleTeste.objects.order_by('ano').values('ano', 'mes').distinct()
-    meses = []
-    anos = []
-    for registro in registros:
-        if registro['mes'] not in meses:
-            meses.append(registro['mes'])
-        if registro['ano'] not in anos:
-            anos.append(registro['ano'])
-    page = request.GET.get('page', 1)
-    paginator = Paginator(registros, 10)
-    page_range = paginator.get_elided_page_range(number=page)
-    try:
-        registros = paginator.page(page)
-    except PageNotAnInteger:
-        registros = paginator.page(1)
-    except EmptyPage:
-        registros = paginator.page(paginator.num_pages)
-    context = {
-        'controles': registros,
-        'page_range': page_range,
-        'escolhas_meses': MES_CHOICES,
-        'anos': anos,
-        'meses': meses,
-    }
-    return render(request, 'controle/exportar_controle.html', context)
+    if request.user.is_staff:
+        registros = ControleTeste.objects.order_by('ano').values('ano', 'mes').distinct()
+        meses = []
+        anos = []
+        for registro in registros:
+            if registro['mes'] not in meses:
+                meses.append(registro['mes'])
+            if registro['ano'] not in anos:
+                anos.append(registro['ano'])
+        page = request.GET.get('page', 1)
+        paginator = Paginator(registros, 10)
+        page_range = paginator.get_elided_page_range(number=page)
+        try:
+            registros = paginator.page(page)
+        except PageNotAnInteger:
+            registros = paginator.page(1)
+        except EmptyPage:
+            registros = paginator.page(paginator.num_pages)
+        context = {
+            'controles': registros,
+            'page_range': page_range,
+            'escolhas_meses': MES_CHOICES,
+            'anos': anos,
+            'meses': meses,
+        }
+        return render(request, 'controle/exportar_controle.html', context)
+    else:
+        return redirect('controles')
 
 
 @login_required

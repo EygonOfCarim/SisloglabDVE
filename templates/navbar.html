@@ -41,7 +41,9 @@
                     <ul class="dropdown-menu dropdown-menu-dark">
                         <li><a class="dropdown-item" href="{% url 'criar_controle' %}"><i class="bi bi-plus-circle"></i> Cadastrar Valores</a></li>
                         <li><a class="dropdown-item" href="{% url 'controles' %}"><i class="bi bi-gear-fill"></i> Consultar / Editar</a></li>
-                        <li><a class="dropdown-item" href="{% url 'exportar_controle' %}"><i class="bi bi-file-medical-fill"></i> Relatório Mensal</a></li>
+                        {% if request.user.is_staff %}
+                            <li><a class="dropdown-item" href="{% url 'exportar_controle' %}"><i class="bi bi-file-medical-fill"></i> Relatório Mensal</a></li>
+                        {% endif %}
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -69,7 +71,7 @@
                 {% endif %}
             </ul>
             <span class="navbar-text ms-auto me-2 rounded bg-primary text-light px-3" style="cursor: default;">
-                <i class="bi bi-person-badge-fill px-1"></i>{{user|title}}
+                <i class="bi bi-person-badge-fill px-1"></i>{{request.user|title}}
             </span>
             <a type="button" href="{% url 'logout' %}" class="my-auto btn btn-danger"><i class="px-1 bi bi-box-arrow-right"></i> Sair</a>
             {% endif %}
