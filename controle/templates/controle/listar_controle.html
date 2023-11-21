@@ -13,16 +13,14 @@
             {% if request.user.is_superuser or request.user.is_staff %}
             <div class="col-3">
                 <label for="id_unidade" class="form-label">Unidade</label>
-                <select class="form-control mb-3" id="id_unidade" name="unidade"
-                       hx-get="{% url 'controle_search' %}"
-                       hx-include="[name='mes'],[name='ano'],[name='unidade']"
-                       hx-target="#search">
-                    <option value="" hidden selected disabled>Busca por unidade</option>
-                    <option value="todos">Todos</option>
-                    {% for unidade in unidades %}
-                        <option value="{{unidade.cnes}}">{{unidade}}</option>
-                    {% endfor %}
-                </select>
+                <input class="form-control mb-3" id="id_unidade" name="unidade"
+                        type="text" placeholder="Busca por unidade..."
+                        onkeypress="return lettersOnly(event)"
+                        autocomplete="off"
+                        hx-get="{% url 'controle_search' %}"
+                        hx-trigger="keyup changed delay:300ms, search"
+                        hx-include="[name='mes'],[name='ano'],[name='unidade']"
+                        hx-target="#search">
             </div>
             {% endif %}
             <div class="col-3">

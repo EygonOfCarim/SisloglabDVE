@@ -69,7 +69,6 @@ def log_unidade_pre_save(sender, instance, **kwargs):
     )
 
 
-@receiver(pre_save, sender=User)
 @receiver(pre_save, sender=UserProfile)
 def user_profile_pre_save(sender, instance, **kwargs):
     if instance.pk:
@@ -104,7 +103,7 @@ def user_profile_pre_save(sender, instance, **kwargs):
     Log.objects.create(
         usuario=usuario,  # Supondo que o campo seja updated_by
         acao='create' if not instance.pk else 'update',
-        objeto_afetado=f'{sender.__name__} {instance.username}',
+        objeto_afetado=f'{sender.__name__} {instance.user.username}',
         mensagem=f'Usuário {instance.pk} foi criado' if not instance.pk else f'Usuário {instance.pk} foi atualizado',
         dados_antes=dados_antes,
         dados_depois=dados_depois,

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Unidade(models.Model):
     cnes = models.CharField(unique=True)
-    razao_social = models.CharField(max_length=150, unique=True)
+    razao_social = models.CharField(max_length=150)
     apelido = models.CharField(max_length=100)
     cep = models.CharField(max_length=9)
     endereco = models.CharField(max_length=100)

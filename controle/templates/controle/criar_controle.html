@@ -10,7 +10,7 @@
         {% endif %}
         <h1 class="text-center">Controle de Teste Rápido</h1>
         <hr>
-        <form action="#" method="POST">
+        <form action="#" method="POST" onsubmit="return validarFormulario();">
             {% csrf_token %}
             <div class="row mb-4 d-flex justify-content-center">
                 <div class="col-2">
@@ -30,7 +30,9 @@
                     <select class="form-select" aria-label="Selecione o mês" name="mes" id="id_mes" required>
                         <option disabled selected>Selecione o mês</option>
                         {% for key, value in escolhas_meses %}
-                            <option value="{{key}}" {% if key in meses %} disabled>{{value}} - JÁ CADASTRADO {%else%}> {{value}} {%endif%}</option>
+                            {% if mes|add:"0" >= key|add:"0" %}
+                                <option value="{{key}}" {% if key in meses %} disabled>{{value}} - JÁ CADASTRADO {%else%}> {{value}} {%endif%}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
@@ -208,6 +210,27 @@
     </div>
 </div>
 
+<!-- Modal Quando Tudo Zerado -->
+<div class="modal fade" id="modalZero" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalZeroLabel">Aviso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Nenhum valor foi preenchido!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Voltar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <script>
     $(document).ready(function() {
         $(".insert").each(function(){
@@ -254,6 +277,28 @@
         });
         $(".totalhepatitec").val(sum);
     });
+
+function validarFormulario() {
+    var inputs = document.getElementsByClassName('insert');
+    var mudou = false;
+
+    for (var i = 0; i < inputs.length; i++) {
+        var valorAtual = parseFloat(inputs[i].value);
+
+        if (valorAtual !== 0) {
+            mudou = true;
+            break;
+        }
+    }
+
+    if (mudou) {
+        return true;
+    } else {
+        // Exibe a modal Bootstrap
+        $('#modalZero').modal('show');
+        return false;
+    }
+}
 </script>
 
 {% endblock content %}

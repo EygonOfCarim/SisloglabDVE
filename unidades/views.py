@@ -130,10 +130,6 @@ def criar_unidade(request):
                 created_by=request.user,
                 updated_by=request.user,
             )
-        except IntegrityError:
-            messages.add_message(request=request, message='CNES já cadastrado anteriormente!',
-                                 level=messages.ERROR)
-            return render(request, 'unidades/buscar_unidade.html', {'cnes': request.POST.get('cnes')})
         except Exception as ex:
             messages.add_message(request=request, message=mark_safe(f'Ocorreu um erro não especificado ao cadastrar a unidade! Entre em contato e informe a mensagem: <br/> {ex}'),
                                  level=messages.ERROR)
@@ -142,11 +138,8 @@ def criar_unidade(request):
                              level=messages.SUCCESS)
         return redirect('unidades')
     else:
-        context = {
-            'ufs': UF,
-            'cnes': request.POST.get('cnes'),
-        }
-        return render(request, 'unidades/criar_unidade.html', context)
+        context = {}
+        return render(request, 'unidades/buscar_unidade.html', context)
 
 
 @login_required

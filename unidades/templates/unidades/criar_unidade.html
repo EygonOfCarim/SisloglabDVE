@@ -49,7 +49,7 @@
         <div class="row mb-4 mx-2">
             <div class="col-1">
                 <label for="id_uf" class="form-label">UF</label>
-                <select class="form-select"  aria-label="Selecione a UF" name="uf" id="id_uf" required>
+                <select class="form-select" style="background: #eee; pointer-events: none; touch-action: none;" aria-label="Selecione a UF" name="uf" id="id_uf" required>
                     <option disabled selected></option>
                     {% for key, value in ufs.items %}
                         <option value="{{key}}" {% if key == uf%} selected {% endif %}> {{key}}</option>

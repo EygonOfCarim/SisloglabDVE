@@ -14,6 +14,7 @@ ACOES = [
     'logout',
 ]
 
+
 @login_required
 @user_passes_test(lambda u: u.is_superuser, login_url='home')
 def view_logs(request):
@@ -24,7 +25,7 @@ def view_logs(request):
         if user['usuario'] not in usuarios:
             usuarios.append(user['usuario'])
     page = request.GET.get('page', 1)
-    paginator = Paginator(logs, 10)
+    paginator = Paginator(logs, 50)
     page_range = paginator.get_elided_page_range(number=page)
     try:
         logs = paginator.page(page)
@@ -69,7 +70,7 @@ def log_search(request):
     elif usuario == 'None':
         logs = logs.filter(usuario__isnull=True)
     page = request.GET.get('page', 1)
-    paginator = Paginator(logs, 10)
+    paginator = Paginator(logs, 50)
     page_range = paginator.get_elided_page_range(number=page)
     try:
         logs = paginator.page(page)

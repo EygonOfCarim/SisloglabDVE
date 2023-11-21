@@ -38,7 +38,7 @@ def login_process(request):
                     return redirect('home')
                 else:
                     messages.add_message(request=request, message='Usuário não tem permissão de acesso!', level=messages.ERROR)
-                    return render(request, 'base/home.html')
+                    return render(request, 'authentication/login.html')
         else:
             context = {
                 'username': username,

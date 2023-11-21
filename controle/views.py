@@ -147,12 +147,14 @@ def criar_controle(request):
                                  message='Selecione um mês!',
                                  level=messages.ERROR)
             mes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+            mes_atual = datetime.now().month
             meses = []
             ano = datetime.now().year
             meses_cadastrados = ControleTeste.objects.filter(unidade=unidade, mes__in=mes, ano=ano)
             for controle in meses_cadastrados:
                 meses.append(controle.mes)
             context = {
+                'mes': mes_atual,
                 'meses': meses,
                 'escolhas_meses': MES_CHOICES,
                 'form': formulario,
@@ -161,12 +163,14 @@ def criar_controle(request):
     else:
         unidade = Unidade.objects.get(pk=request.user.userprofile.unidade_id)
         mes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+        mes_atual = datetime.now().month
         meses = []
         ano = datetime.now().year
         meses_cadastrados = ControleTeste.objects.filter(unidade=unidade, mes__in=mes, ano=ano)
         for controle in meses_cadastrados:
             meses.append(controle.mes)
         context = {
+            'mes': mes_atual,
             'meses': meses,
             'escolhas_meses': MES_CHOICES,
             'form': ControleTesteForm(),
@@ -471,8 +475,8 @@ def controle_search(request):
         registros = registros.filter(mes=mes)
     if ano and not ano == 'todos':
         registros = registros.filter(ano=ano)
-    if unidade and not unidade == 'todos':
-        registros = registros.filter(unidade__cnes=unidade)
+    if unidade:
+        registros = registros.filter(unidade__apelido__icontains=unidade)
 
     paginator = Paginator(registros, 10)
     page_range = paginator.get_elided_page_range(number=page)
