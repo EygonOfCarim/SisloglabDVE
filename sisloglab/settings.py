@@ -107,9 +107,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'OPTIONS': {
-            'options': '-c search_path=sysloglab_db'
+            'options': '-c search_path=sisloglab_db'
         },
-        'NAME': 'SysLogLab',
+        'NAME': 'Sisloglab',
         'USER': 'postgres',
         'PASSWORD': 'postgres@pat280686',
         'HOST': '192.168.6.56',
