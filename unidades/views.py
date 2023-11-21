@@ -50,7 +50,7 @@ def unidades(request):
     lista_unidades = Unidade.objects.all().order_by(
             Cast('cnes', IntegerField()))
     page = request.GET.get('page', 1)
-    paginator = Paginator(lista_unidades, 5)
+    paginator = Paginator(lista_unidades, 15)
     page_range = paginator.get_elided_page_range(number=page)
     try:
         t_unidades = paginator.page(page)
@@ -203,7 +203,7 @@ def unidades_search(request):
     if apelido:
         unidades = unidades.filter(apelido__icontains=apelido)
 
-    paginator = Paginator(unidades, 5)
+    paginator = Paginator(unidades, 15)
     page_range = paginator.get_elided_page_range(number=page)
     try:
         unidades = paginator.page(page)
