@@ -288,7 +288,7 @@ def controles(request):
 @login_required
 def exportar_controles(request):
     if request.user.is_staff:
-        registros = ControleTeste.objects.order_by('ano').values('ano', 'mes').distinct()
+        registros = ControleTeste.objects.order_by(Cast('mes', IntegerField()), 'ano').values('ano', 'mes').distinct()
         meses = []
         anos = []
         for registro in registros:
