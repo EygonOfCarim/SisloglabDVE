@@ -391,8 +391,9 @@ def ver_controle(request, ano, mes):
     }
     registros = ControleTeste.objects.filter(ano=ano, mes=mes).order_by('-unidade')
     unidades = []
+    n_preenchidas = []
     for registro in registros:
-        unidades.append(registro.unidade)
+        unidades.append(registro.unidade.apelido)
         variaveis_registro['t1hiv_cegonha'] += registro.t1hiv_cegonha
         variaveis_registro['t1hiv_rotina'] += registro.t1hiv_rotina
         variaveis_registro['t1hiv_mobilizacao'] += registro.t1hiv_mobilizacao
@@ -461,11 +462,16 @@ def ver_controle(request, ano, mes):
         variaveis_registro['auto_teste_hiv'] += registro.auto_teste_hiv
         variaveis_registro['auto_teste_hiv_estoque'] += registro.auto_teste_hiv_estoque
         variaveis_registro['auto_teste_hiv_solicitadas'] += registro.auto_teste_hiv_solicitadas
+    todas_unidades = Unidade.objects.all()
+    for unidade in todas_unidades:
+        if unidade.apelido not in unidades:
+            n_preenchidas.append(unidade.apelido)
     context = {
         'form': variaveis_registro,
         'ano': ano,
         'mes': mes,
-        'unidades': unidades,
+        'unidades': todas_unidades,
+        'n_preenchidas': n_preenchidas,
     }
     return render(request, 'controle/ver_controle.html', context)
 

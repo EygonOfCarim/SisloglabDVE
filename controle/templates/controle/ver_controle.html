@@ -9,18 +9,14 @@
 
         <div class="row mb-4 d-flex justify-content-center">
             <div class="col-2 text-center">
-                <label for="id_unidades" class="form-label fs-6"><b>Valores preenchidos pelas unidades:</b></label>
-                <select class="form-control mb-3" id="id_unidades" name="unidades" multiple>
-                {% for unidade in unidades%}
-                    <option>{{unidade}}</option>
-                {% endfor %}
-                </select>
+                <label class="form-label fs-5"><b>Preenchimento</b></label>
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalUnidades">Verificar unidades</button>
             </div>
             <div class="col-2 text-center">
                 <label class="form-label fs-5"><b>Mês</b></label>
                 <input type="text" class="text-center form-control" value="{{ mes | month_string }}" readonly>
             </div>
-            <div class="col-2">
+            <div class="col-2 text-center">
                 <label class="form-label fs-5"><b>Ano</b></label>
                 <input type="text" class="text-center form-control" value="{{ ano }}" readonly>
             </div>
@@ -168,7 +164,7 @@
                     <th class="align-middle" scope="col">Sífilis</th>
                     <th class="align-middle" scope="col">Hepatite B</th>
                     <th class="align-middle" scope="col">Hepatite C</th>
-                    <th class="align-middle" scope="col">Autoteste HIV</th>
+                    <th class="align-middle" scope="col">Autoteste HIV (Unitário)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -188,6 +184,36 @@
     <div class="col d-flex justify-content-center mt-4">
         <a type="button" class="btn btn-outline-danger px-4 me-4" href="{% url 'exportar_controle' %}"><i class="bi bi-x-circle-fill"></i> Voltar</a>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalUnidades" tabindex="-1" aria-labelledby="modalUnidadesLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fs-2" id="modalUnidadesLabel">Verificação</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <table class="table table-secondary table-striped table-hover">
+                  <tr class="table-dark text-center">
+                    <th >Unidades</th>
+                    <th>Preenchimento</th>
+                  </tr>
+                  {% for unidade in unidades%}
+                  <tr>
+                      <td>{{ unidade }}</td>
+                      <td class="text-center">{% if unidade.apelido in n_preenchidas %} <i class="bi bi-x-circle-fill" style="color: red;"></i> {% else %} <i class="bi bi-check-circle-fill" style="color: green;"></i> {% endif %}</td>
+                  </tr>
+                  {% endfor %}
+              </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 {% endblock content %}
