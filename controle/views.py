@@ -11,6 +11,7 @@ from unidades.models import Unidade
 from django.contrib.auth.models import User
 from datetime import datetime
 from .forms import ControleTesteForm
+from django.core.exceptions import ObjectDoesNotExist
 
 
 @login_required
@@ -163,7 +164,7 @@ def criar_controle(request):
     else:
         try:
             unidade = Unidade.objects.get(pk=request.user.userprofile.unidade_id)
-        except Exception as ex:
+        except ObjectDoesNotExist:
             messages.add_message(request=request, message=mark_safe(
                 f'Não está vinculado a nenhuma unidade!'),
                                  level=messages.ERROR)
