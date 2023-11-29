@@ -161,7 +161,13 @@ def criar_controle(request):
             }
             return render(request, 'controle/criar_controle.html', context)
     else:
-        unidade = Unidade.objects.filter(pk=request.user.userprofile.unidade_id)
+        try:
+            unidade = Unidade.objects.get(pk=request.user.userprofile.unidade_id)
+        except Exception as ex:
+            messages.add_message(request=request, message=mark_safe(
+                f'Não está vinculado a nenhuma unidade!'),
+                                 level=messages.ERROR)
+            return redirect('home')
         mes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
         mes_atual = datetime.now().month
         meses = []
