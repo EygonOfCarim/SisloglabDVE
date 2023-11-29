@@ -14,13 +14,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Redirect URLs LOGIN & LOGOUT
 LOGIN_URL = '/'
 LOGOUT_URL = '/'
 
-ALLOWED_HOSTS = ['192.168.6.56', '192.168.6.220', 'localhost']
+ALLOWED_HOSTS = ['192.168.6.56', '192.168.6.220', 'localhost', '*']
 
 # Application definition
 

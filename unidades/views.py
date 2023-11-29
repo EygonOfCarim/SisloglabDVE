@@ -78,11 +78,20 @@ def buscar_unidade(request):
             municipio = "RIBEIRAO PRETO"
             url = f"https://apidadosabertos.saude.gov.br/cnes/estabelecimentos/{request.POST.get('cnes')}"
             response = requests.get(url, timeout=5)
+            print(url)
             response_json = response.json()
             if response_json['codigo_uf'] == 35:
                 uf = 'SP'
             if response_json['codigo_municipio'] == 354340:
                 municipio = "RIBEIRAO PRETO"
+            if response_json['numero_telefone_estabelecimento']:
+                if response_json['numero_telefone_estabelecimento'][0] != '0':
+                    telefone = response_json['numero_telefone_estabelecimento']
+                else:
+                    telefone = response_json['numero_telefone_estabelecimento'].lstrip(response_json['numero_telefone_estabelecimento'][0])
+            else:
+                telefone = '0'
+
             context = {
                 'cnes': response_json['codigo_cnes'],
                 'razao_social': response_json['nome_razao_social'],
@@ -91,7 +100,7 @@ def buscar_unidade(request):
                 'endereco': response_json['endereco_estabelecimento'],
                 'numero': response_json['numero_estabelecimento'] if response_json['numero_estabelecimento'].isnumeric() else 0,
                 'bairro': response_json['bairro_estabelecimento'],
-                'telefone': response_json['numero_telefone_estabelecimento'] if response_json['numero_telefone_estabelecimento'][0] != '0' else response_json['numero_telefone_estabelecimento'].lstrip(response_json['numero_telefone_estabelecimento'][0]),
+                'telefone': telefone,
                 'uf': uf,
                 'municipio': municipio,
                 'ufs': UF,
